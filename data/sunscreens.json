@@ -1,1 +1,70 @@
-Placeholder
+[
+  {
+    "id": "boj-relief-sun",
+    "brand": "Beauty of Joseon",
+    "product": "Relief Sun: Rice + Probiotics",
+    "type": "chemical",
+    "filters": [
+      { "name": "Uvinul A Plus", "category": "UVA" },
+      { "name": "Uvinul T 150", "category": "UVB" },
+      { "name": "Tinosorb M", "category": "broad-spectrum" }
+    ],
+    "ingredients": [
+      "Water",
+      "Butylene Glycol",
+      "Niacinamide",
+      "Glycerin",
+      "Uvinul A Plus",
+      "Uvinul T 150",
+      "Tinosorb M",
+      "Oryza Sativa Extract",
+      "Bifida Ferment Lysate"
+    ],
+    "rosacea_safety": "maybe yes",
+    "notes": "Very popular K-beauty sunscreen with high tolerability."
+  },
+
+  {
+    "id": "roundlab-birch-juice",
+    "brand": "Round Lab",
+    "product": "Birch Juice Moisturizing Sunscreen",
+    "type": "chemical",
+    "filters": [
+      { "name": "Uvinul A Plus", "category": "UVA" },
+      { "name": "Uvinul T 150", "category": "UVB" }
+    ],
+    "ingredients": [
+      "Water",
+      "Birch Juice",
+      "1,2-Hexanediol",
+      "Glycerin",
+      "Niacinamide",
+      "Uvinul A Plus",
+      "Uvinul T 150"
+    ],
+    "rosacea_safety": "maybe yes",
+    "notes": "Hydrating; good for dry and dehydrated skin."
+  },
+
+  {
+    "id": "elta-md-uv-clear",
+    "brand": "EltaMD",
+    "product": "UV Clear Broad-Spectrum SPF 46",
+    "type": "hybrid",
+    "filters": [
+      { "name": "Zinc Oxide 9%", "category": "mineral" },
+      { "name": "Octinoxate 7.5%", "category": "chemical UVB" }
+    ],
+    "ingredients": [
+      "Zinc Oxide",
+      "Octinoxate",
+      "Niacinamide",
+      "Sodium Hyaluronate",
+      "Tocopheryl Acetate",
+      "Lactic Acid"
+    ],
+    "rosacea_safety": "yes",
+    "notes": "Extremely popular for rosacea and acne-prone skin."
+  }
+]
+
