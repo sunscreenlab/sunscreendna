@@ -15,7 +15,18 @@ function displaySunscreens(list) {
       <h2>${item.brand} – ${item.product}</h2>
       <p><strong>Type:</strong> ${item.type}</p>
       <p><strong>Niacinamide?</strong> ${item.niacinamide ?? "Unkonwn"}</p>
-      <p><strong>Filters:</strong> ${item.filters.map(f => f.name).join(", ")}</p>
+      <p>
+  ${item.ingredients
+    .map(ing => `<a href="https://incidecoder.com/ingredients/${ing
+        .toLowerCase()
+        .replace(/[^a-z0-9 ]/g, "")
+        .replace(/\s+/g, "-")
+      }" target="_blank">${ing}</a>`
+    )
+    .join(", ")
+  }
+</p>
+
       <p><strong>Rosacea Safety:</strong> ${item.rosacea_safety}</p>
       <details>
         <summary>Ingredients</summary>
