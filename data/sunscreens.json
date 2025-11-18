@@ -3,6 +3,7 @@
     "id": "boj-relief-sun",
     "brand": "Beauty of Joseon",
     "product": "Relief Sun: Rice + Probiotics",
+    "Niacinamide": "Yes"
     "type": "chemical",
     "filters": [
       { "name": "Uvinul A Plus", "category": "UVA" },
@@ -28,6 +29,7 @@
     "id": "roundlab-birch-juice",
     "brand": "Round Lab",
     "product": "Birch Juice Moisturizing Sunscreen",
+    "Niacinamide": "Yes"
     "type": "chemical",
     "filters": [
       { "name": "Uvinul A Plus", "category": "UVA" },
@@ -50,6 +52,7 @@
     "id": "elta-md-uv-clear",
     "brand": "EltaMD",
     "product": "UV Clear Broad-Spectrum SPF 46",
+    "Niacinamide": "Yes"
     "type": "hybrid",
     "filters": [
       { "name": "Zinc Oxide 9%", "category": "mineral" },
