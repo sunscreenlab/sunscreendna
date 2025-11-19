@@ -1,18 +1,3 @@
-async function loadSunscreens() {
-  const response = await fetch("data/sunscreens.json");
-  const sunscreens = await response.json();
-  return sunscreens;
-}
-
-function formatIngredientLink(ing) {
-  const urlSlug = ing
-    .toLowerCase()
-    .replace(/[^a-z0-9 ]/g, "")
-    .replace(/\s+/g, "-");
-
-  return `<a href="https://incidecoder.com/ingredients/${urlSlug}" target="_blank">${ing}</a>`;
-}
-
 function displaySunscreens(list) {
   const container = document.getElementById("results");
   container.innerHTML = "";
@@ -31,6 +16,9 @@ function displaySunscreens(list) {
     const rosacea = ss.rosacea ?? {};
     const acne = ss.acne ?? {};
     const sensitive = ss.sensitive ?? {};
+
+    // 🔥 DYNAMIC REPORT ISSUE LINK (the new part)
+    const reportLink = `https://github.com/kristimetz/kristimetz.github.io/issues/new?template=sunscreen-issue.md&title=Issue%20with%20sunscreen%3A%20${item.id}&body=**Sunscreen%20ID%3A**%20${item.id}`;
 
     div.innerHTML = `
       <h2>${item.brand} – ${item.product}</h2>
@@ -74,30 +62,16 @@ function displaySunscreens(list) {
         <p>${ingredientLinks}</p>
       </details>
 
+      <!-- 🔥 The clickable Issue Report link -->
+      <p style="margin-top: 10px;">
+        <a href="${reportLink}" target="_blank" rel="noopener noreferrer">
+          📣 Report an Issue with This Sunscreen
+        </a>
+      </p>
+
       <p><em>${item.notes ?? ""}</em></p>
     `;
 
     container.appendChild(div);
   });
 }
-
-function setupSearch(all) {
-  const search = document.getElementById("search");
-
-  search.addEventListener("input", () => {
-    const term = search.value.toLowerCase();
-
-    const filtered = all.filter(item =>
-      item.brand.toLowerCase().includes(term) ||
-      item.product.toLowerCase().includes(term) ||
-      item.ingredients.some(ing => ing.toLowerCase().includes(term))
-    );
-
-    displaySunscreens(filtered);
-  });
-}
-
-loadSunscreens().then(all => {
-  displaySunscreens(all);
-  setupSearch(all);
-});
