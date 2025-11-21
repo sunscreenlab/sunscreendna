@@ -837,4 +837,121 @@
 
     "notes": "Hydrating chemical sunscreen with ceramides and botanicals."
   }
+  {
+    "id": "uiq-biome-remedy-watery-sun-cream-spf-50+-pa++++",
+    "brand": "UIQ",
+    "product": "UIQ Biome Remedy Watery Sun Cream SPF 50+ PA++++",
+    "niacinamide": "Yes",
+    "type": "hybrid",
+    "spf": null,
+    "pa": null,
+    "visible_light_protection": "unknown",
+    "water_resistant": "none",
+    "texture_finish": "unknown",
+    "white_cast": 0,
+    "country": "unknown",
+    "fragrance": "unknown",
+    "filters": [
+      {
+        "name": "Ethylhexyl Triazone",
+        "category": "chemical"
+      },
+      {
+        "name": "Diethylamino Hydroxybenzoyl Hexyl Benzoate",
+        "category": "chemical"
+      },
+      {
+        "name": "Bis-Ethylhexyloxyphenol Methoxyphenyl Triazine",
+        "category": "chemical"
+      },
+      {
+        "name": "Titanium Dioxide",
+        "category": "mineral"
+      }
+    ],
+    "barrier_support": "0",
+    "safety_scores": {
+      "rosacea": {
+        "stinging": 0,
+        "flushing": 0,
+        "barrier": 0
+      },
+      "acne": {
+        "comedogenicity": 0,
+        "fungal_acne": 0
+      },
+      "sensitive": {
+        "fragrance": "unknown",
+        "essential_oils": "unknown",
+        "surfactant_strength": "unknown"
+      }
+    },
+    "ingredients": [
+      "Water",
+      "Dibutyl Adipate",
+      "Butyloctyl Salicylate",
+      "Ethylhexyl Triazone",
+      "Propanediol",
+      "Methylene Bis-Benzotriazolyl Tetramethylbutylphenol",
+      "Methylpropanediol",
+      "Niacinamide",
+      "Titanium Dioxide (CI 77891)",
+      "Diethylamino Hydroxybenzoyl Hexyl Benzoate",
+      "1",
+      "2-Hexanediol",
+      "Bis-Ethylhexyloxyphenol Methoxyphenyl Triazine"
+    ],
+    "notes": ""
+  },
+  {
+    "id": "ma:nyo-galactomy-niacin-sunscreen",
+    "brand": "ma:nyo",
+    "product": "ma:nyo Galactomy Niacin Sunscreen",
+    "niacinamide": "Yes",
+    "type": "chemical",
+    "spf": null,
+    "pa": null,
+    "visible_light_protection": "unknown",
+    "water_resistant": "none",
+    "texture_finish": "unknown",
+    "white_cast": 0,
+    "country": "unknown",
+    "fragrance": "unknown",
+    "filters": [
+      {
+        "name": "Diethylamino Hydroxybenzoyl Hexyl Benzoate",
+        "category": "chemical"
+      }
+    ],
+    "barrier_support": "0",
+    "safety_scores": {
+      "rosacea": {
+        "stinging": 0,
+        "flushing": 0,
+        "barrier": 0
+      },
+      "acne": {
+        "comedogenicity": 0,
+        "fungal_acne": 0
+      },
+      "sensitive": {
+        "fragrance": "unknown",
+        "essential_oils": "unknown",
+        "surfactant_strength": "unknown"
+      }
+    },
+    "ingredients": [
+      "Water",
+      "Galactomyces Ferment Filtrate (10%)",
+      "Glycerin",
+      "Butylene Glycol",
+      "C12-15 Alkyl Benzoate",
+      "1",
+      "2-Hexanediol",
+      "Diethylamino Hydroxybenzoyl Hexyl Benzoate",
+      "Niacinamide",
+      "Polymethyl Methacrylate"
+    ],
+    "notes": ""
+  }
 ]
