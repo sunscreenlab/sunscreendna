@@ -2,14 +2,21 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Sunscreen Database</title>
+  <title>The Sunscreen Lab</title>
   <link rel="icon" type="image/png" href="favicon2.png">
+
   <style>
     body {
       font-family: sans-serif;
       max-width: 900px;
       margin: 40px auto;
       line-height: 1.5;
+    }
+
+    .site-banner img {
+      width: 100%;
+      height: auto;
+      display: block;
     }
 
     input[type="search"] {
@@ -31,9 +38,15 @@
     }
   </style>
 </head>
+
 <body>
 
-  <h1>Sunscreen Ingredient Database</h1>
+  <!-- ✅ Correct banner placement -->
+  <div class="site-banner">
+    <img src="SunscreenLabBanner.jpg" alt="The Sunscreen Lab Banner">
+  </div>
+
+  <h1>The Sunscreen Lab</h1>
   <p>Search by brand, product, or ingredient.</p>
 
   <input id="search" type="search" placeholder="Search…" />
@@ -41,5 +54,6 @@
   <div id="results"></div>
 
   <script src="script.js"></script>
+
 </body>
 </html>
