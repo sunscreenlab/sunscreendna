@@ -5,19 +5,9 @@
   <title>All Sunscreens – The Sunscreen Lab</title>
   <link rel="icon" type="image/png" href="favicon2.png">
 
-  <style>
-    body {
-      font-family: sans-serif;
-      max-width: 900px;
-      margin: 40px auto;
-      line-height: 1.5;
-    }
-    .site-banner img {
-      width: 100%;
-      height: auto;
-      display: block;
-    }
-  </style>
+  <!-- Global stylesheet -->
+  <link rel="stylesheet" href="styles/global.css">
+
 </head>
 
 <body>
@@ -26,7 +16,6 @@
     <img src="SunscreenLabBanner.jpg" alt="The Sunscreen Lab Banner">
   </div>
 
-  <!-- ✔ Moved the Back to Home link to the body -->
   <p><a href="index.html">← Back to Home</a></p>
 
   <h1>All Sunscreens</h1>
@@ -37,9 +26,9 @@
   <script src="script.js"></script>
 
   <script>
-    // Override homepage behavior: show full list immediately
+    // Load all sunscreens (use the brand-including display function)
     loadSunscreens().then(all => {
-      displaySunscreens(all);
+      displaySunscreensWithBrand(all);
     });
   </script>
 
