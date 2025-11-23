@@ -1,26 +1,74 @@
 <!DOCTYPE html>
 <html lang="en">
-<head><meta charset="UTF-8"><title>The Sunscreen Lab</title></head>
+<head>
+  <meta charset="UTF-8">
+  <title>The Sunscreen Lab</title>
+
+  <style>
+    /* Brand list styling */
+    .brand-list {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    .brand-list a {
+      text-decoration: none;
+      color: #0057b7;
+      font-weight: 600;
+    }
+
+    .brand-list a:hover {
+      text-decoration: underline;
+    }
+
+    /* Top menu */
+    #top-menu {
+      padding: 10px;
+      background: #f4f4f4;
+      display: flex;
+      gap: 10px;
+    }
+
+    /* Turn links into button-looking elements */
+    .menu-link {
+      background: #e0e0e0;
+      padding: 8px 12px;
+      border-radius: 5px;
+      text-decoration: none;
+      display: inline-block;
+      color: black;
+      font-weight: 600;
+    }
+
+    .menu-link:hover {
+      background: #d2d2d2;
+    }
+
+  </style>
+</head>
+
 <body>
 
-<div id="top-menu" style="padding:10px; background:#f4f4f4; display:flex; gap:10px;">
-  <input type="text" placeholder="Search Sunscreens" style="flex:1; padding:8px;">
-  <button>Filters</button>
-  <a href="all.html"><button>Explore Sunscreens</button></a>
-  <a href="add.html"><button>Add a Sunscreen</button></a>
-</div>
+  <div id="top-menu">
+    <input type="text" placeholder="Search Sunscreens" style="flex: 1; padding: 8px;">
+    <button>Filters</button>
+    <a class="menu-link" href="all.html">Explore Sunscreens</a>
+    <a class="menu-link" href="add.html">Add a Sunscreen</a>
+  </div>
 
-
-<h1>Home Page</h1>
-</body>
-
+  <h1>Home Page</h1>
 
   <p>Search by brand, product, or ingredient.</p>
 
   <input id="search" type="search" placeholder="Search…" />
 
   <!-- ⭐ NEW: Brand list -->
-  <h2>Browse by Brand <small>(or <a href="all.html">list all sunscreens</a>)</small></h2>
+  <h2>Browse by Brand 
+    <small>(or <a href="all.html">list all sunscreens</a>)</small>
+  </h2>
+
   <div id="brand-list" class="brand-list"></div>
 
   <div id="results"></div>
