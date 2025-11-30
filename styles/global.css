@@ -155,4 +155,66 @@ body {
       margin: 0 auto;
       line-height: 1.6;
 }
+/* ------------------------------------------
+   🌞 STEP 9 — Enhanced Navigation & Hero Layout
+   ------------------------------------------ */
+
+/* NAVIGATION BAR IMPROVEMENT */
+header {
+  background: var(--color-bg);
+  padding: var(--space-5) var(--space-4);
+  border-bottom: 1px solid var(--color-border);
+  margin-bottom: var(--space-6);
+  position: sticky;
+  top: 0;
+  z-index: 999;
+}
+
+.nav-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  align-items: center;
+}
+
+/* NAV BUTTONS */
+header button {
+  background: var(--color-accent);
+  color: white;
+  border-radius: 6px;
+  padding: var(--space-2) var(--space-4);
+  font-size: 0.9rem;
+  border: none;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+header button:hover {
+  background: #0669cc;
+}
+
+/* NAV SEARCH FIELD */
+header input[type="text"] {
+  flex: 1;
+  min-width: 200px;
+  margin: 0;
+  font-size: 0.9rem;
+}
+
+/* HERO SECTION */
+.section-hero {
+  padding: var(--space-6) 0;
+}
+
+.section-hero h1 {
+  font-size: 2.4rem;
+  font-weight: 700;
+  color: var(--color-text);
+}
+
+.section-hero p {
+  font-size: 1.1rem;
+  color: var(--color-text-light);
+  margin-bottom: var(--space-5);
+}
 
