@@ -364,6 +364,24 @@ header input[type="text"] {
   text-align: center;
   line-height: 1.5;
 }
+/* ------------------------------------------
+   🌞 STEP 14 — About Section
+   ------------------------------------------ */
+
+.section-about {
+  padding: var(--space-6) 0;
+}
+
+.about-box {
+  border: 1px solid var(--color-border);
+  background: var(--color-bg-alt);
+  padding: var(--space-5);
+  border-radius: 10px;
+  margin-top: var(--space-4);
+  line-height: 1.6;
+  color: var(--color-text-light);
+  font-size: 0.95rem;
+}
 
 
 
