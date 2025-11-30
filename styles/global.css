@@ -195,27 +195,43 @@ header input[type="text"] {
 
 /* HERO SECTION */
 .section-hero {
-  padding: var(--space-6) 0;
-  padding-left: var(--space-5);
-  padding-right: var(--space-5);
-
-  /* Full-width override */
   width: 100vw;
   margin-left: 50%;
   transform: translateX(-50%);
   max-width: none;
 
-  /* Banner image */
+  /* Height for the image container */
+  height: 260px;            /* You can adjust this up/down */
+  padding: 0;
+
+  /* Background image */
   background-image: url("../images/sunscreenlab_banner.png");
-  background-size: contain;     /* show entire image */
-  background-position: center;  /* center horizontally */
-  background-repeat: no-repeat; /* avoid tiling */
-  min-height: 150px;
-  height: 150px;
-   
+  background-size: contain;       /* show entire image */
+  background-position: center;    /* center horizontally */
+  background-repeat: no-repeat;   /* no tiling */
+
+  /* Create space below the image for text */
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-end;
+}
+
+/* Text wrapper inside hero */
+.section-hero-text {
+  padding: var(--space-5);
+  padding-bottom: var(--space-6);
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.section-hero-text h1 {
+  font-size: 2rem;
+  margin-bottom: var(--space-2);
+}
+
+.section-hero-text p {
+  font-size: 1.1rem;
+  color: var(--color-text-light);
 }
 
 .section-hero h1 {
