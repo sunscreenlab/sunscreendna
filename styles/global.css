@@ -196,6 +196,22 @@ header input[type="text"] {
 /* HERO SECTION */
 .section-hero {
   padding: var(--space-6) 0;
+
+  /* The banner image */
+  background-image: url("images/sunscreenlab_banner.jpg");
+
+  /* Make it behave like a proper hero banner */
+  background-size: cover;       /* fill the space */
+  background-position: left center;  /* keeps the sun on the left */
+  background-repeat: no-repeat;
+
+  /* Optional: Add slight height if you want a bigger banner */
+  min-height: 300px;
+
+  /* Ensure text is readable on top */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 .section-hero h1 {
