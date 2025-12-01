@@ -38,7 +38,10 @@ body {
   background: var(--color-bg);
   color: var(--color-text);
   line-height: 1.6;
-  padding: var(--space-5);
+
+  /* Remove the padding that breaks the hero */
+  padding: 0;
+
   max-width: 900px;
   margin: 0 auto;
 }
