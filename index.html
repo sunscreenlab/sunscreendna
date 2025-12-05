@@ -1,66 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>The Sunscreen Lab</title>
-
-  <style>
-    /* Brand list styling */
-    .brand-list {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 10px;
-      margin-bottom: 20px;
-    }
-
-    .brand-list a {
-      text-decoration: none;
-      color: #0057b7;
-      font-weight: 600;
-    }
-
-    .brand-list a:hover {
-      text-decoration: underline;
-    }
-
-    /* Top menu */
-    #top-menu {
-      padding: 10px;
-      background: #f4f4f4;
-      display: flex;
-      gap: 10px;
-    }
-
-    /* Turn links into button-looking elements */
-    .menu-link {
-      background: #e0e0e0;
-      padding: 8px 12px;
-      border-radius: 5px;
-      text-decoration: none;
-      display: inline-block;
-      color: black;
-      font-weight: 600;
-    }
-
-    .menu-link:hover {
-      background: #d2d2d2;
-    }
-
-    /* Placeholder box for quiz */
-    .quiz-placeholder {
-      margin-top: 25px;
-      margin-bottom: 35px;
-      padding: 18px 20px;
-      background: #fafafa;
-      border-left: 4px solid #0057b7;
-      border-radius: 6px;
-    }
-
-    .quiz-placeholder h2 {
-      margin: 0 0 8px;
-      font-size: 1.4em;
-    }
-  </style>
+  <meta charset="UTF-8" />
+  <title>The Sunscreen Lab – Wireframe</title>
+  <link rel="stylesheet" href="styles/global.css">  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 
 <body>
@@ -106,7 +50,22 @@
 
   <div id="results"></div>
 
-  <script src="script.js"></script>
+    // Expand/collapse button
+    document.getElementById("showAllBrandsBtn").addEventListener("click", () => {
+      const fullList = document.getElementById("allBrandGrid");
+      const btn = document.getElementById("showAllBrandsBtn");
+
+      if (fullList.style.display === "none") {
+        fullList.style.display = "flex";
+        btn.textContent = "Hide All Brands";
+      } else {
+        fullList.style.display = "none";
+        btn.textContent = "Show All Brands";
+      }
+    });
+
+    loadBrands();
+  </script>
 
 </body>
 </html>

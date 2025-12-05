@@ -1,93 +1,266 @@
-/* Global Site Styling */
+/* ------------------------------------------
+   🌞 The Sunscreen Lab — Global Foundation
+   Hybrid Minimal + Scientific Style
+   ------------------------------------------ */
+
+/* 1. Reset / Normalize */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* 2. Global font + color tokens */
+:root {
+  --font-main: "Inter", "Segoe UI", Arial, sans-serif;
+
+  /* Neutral scientific palette */
+  --color-bg: #ffffff;
+  --color-bg-alt: #f7f7f8;
+  --color-border: #dddddd;
+  --color-text: #222222;
+  --color-text-light: #555555;
+  --color-accent: #0a85ff;
+  --color-accent-light: #e5f3ff;
+
+  /* spacing scale */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+}
+
+/* 3. Apply global background + text */
 body {
-  font-family: sans-serif;
+  font-family: var(--font-main);
+  background: var(--color-bg);
+  color: var(--color-text);
+  line-height: 1.6;
+
+  /* Remove the padding that breaks the hero */
+  padding: 0;
+
   max-width: 900px;
-  margin: 40px auto;
-  line-height: 1.5;
+  margin: 0 auto;
 }
 
-.site-banner img {
-  width: 100%;
-  height: auto;
-  display: block;
+/* 4. Section layout */
+.section {
+  padding: var(--space-6) 0;
+  border-bottom: 1px solid var(--color-border);
 }
 
-/* 🌸 K-BEAUTY AESTHETIC CARD STYLE */
-.sunscreen-card {
-  background: #ffffff;
-  border-radius: 18px;
-  padding: 24px;
-  margin: 22px 0;
-  box-shadow: 0 4px 16px rgba(255, 182, 193, 0.15),
-              0 2px 8px rgba(170, 170, 170, 0.10);
-  border: 1px solid rgba(255, 192, 203, 0.30);
-  transition: transform 0.2s ease, box-shadow 0.3s ease;
+/* 5. Headings */
+h1, h2, h3 {
+  font-weight: 600;
+  margin-bottom: var(--space-3);
 }
 
-.sunscreen-card:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 6px 22px rgba(255, 182, 193, 0.25),
-              0 3px 12px rgba(150, 150, 150, 0.12);
+h1 {
+  font-size: 2rem;
+  margin-bottom: var(--space-4);
 }
 
-.sunscreen-card h2, 
-.sunscreen-card h3 {
-  font-family: "Segoe UI", sans-serif;
-  font-size: 1.45rem;
-  margin-top: 0;
-  margin-bottom: 12px;
-  color: #333;
-  letter-spacing: 0.4px;
+h2 {
+  font-size: 1.4rem;
+  margin-bottom: var(--space-3);
 }
 
-.sunscreen-card strong {
-  color: #555;
-}
-
-.sunscreen-card details {
-  margin-top: 12px;
-  background: rgba(255, 240, 245, 0.35);
-  padding: 12px;
-  border-radius: 12px;
-  border: 1px solid rgba(255, 192, 203, 0.25);
-}
-
-.sunscreen-card summary {
-  font-weight: bold;
+/* 6. Button styling */
+button {
+  padding: var(--space-2) var(--space-4);
+  background: var(--color-accent);
+  border: none;
+  border-radius: 6px;
+  color: white;
+  font-size: 0.9rem;
   cursor: pointer;
-  color: #444;
+  transition: background 0.2s ease;
 }
 
-/* ⭐ GLOBAL LINK COLORS (Blue Everywhere) ⭐ */
-a {
-  color: #0066cc;
-  text-decoration: underline;
+button:hover {
+  background: #0669cc;
 }
 
-a:hover {
-  color: #004a99;
+/* 7. Input fields */
+input[type="text"] {
+  padding: var(--space-3);
+  border-radius: 6px;
+  border: 1px solid var(--color-border);
+  width: 100%;
+  font-size: 1rem;
+  margin: var(--space-2) 0;
 }
 
-/* Remove old pink link styling */
-.sunscreen-card a {
-  color: inherit; /* inherits global blue */
-  text-decoration: inherit;
+/* ------------------------------------------
+   🌞 Navigation Bar
+   ------------------------------------------ */
+
+header {
+  background: var(--color-bg);
+  padding: var(--space-5) var(--space-4);
+  border-bottom: 1px solid var(--color-border);
+  margin-bottom: var(--space-6);
+  position: sticky;
+  top: 0;
+  z-index: 999;
 }
 
-.sunscreen-card a:hover {
-  color: inherit;
-  text-decoration: underline;
+.nav-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  align-items: center;
 }
 
-@media (max-width: 600px) {
-  .sunscreen-card {
-    padding: 20px;
-  }
+header button:hover {
+  background: #0669cc;
+}
 
-  .sunscreen-card h2,
-  .sunscreen-card h3 {
-    font-size: 1.3rem;
-  }
+/* ------------------------------------------
+   🌞 FIXED HERO SECTION (FULL-WIDTH BANNER)
+   ------------------------------------------ */
+
+/* FULL-WIDTH HERO EVEN WITH BODY MAX-WIDTH */
+.section-hero {
+  position: relative;
+  left: 50%;
+  right: 50%;
+  width: 100vw;
+  margin-left: -50vw;
+  margin-right: -50vw;
+
+  height: 180px;   /* Adjust to control how much of the top shows */
+  padding: 0;
+
+  background-image: url("../images/Cropped_sunscreenlabbanner.png");
+  background-size: cover;            /* Fills width without shrinking */
+  background-position: top center;   /* Show the TOP portion */
+  background-repeat: no-repeat;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+
+/* TEXT BLOCK INSIDE HERO */
+.section-hero-text {
+  padding: var(--space-5);
+  padding-bottom: var(--space-6);
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.section-hero-text h1 {
+  font-size: 2rem;
+  font-weight: 700;
+}
+
+.section-hero-text p {
+  font-size: 1.1rem;
+  color: var(--color-text-light);
+}
+
+/* ------------------------------------------
+   🌞 Search Section
+   ------------------------------------------ */
+
+.section-search {
+  padding: var(--space-6) 0;
+}
+
+.search-bar-wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  align-items: center;
+  margin-bottom: var(--space-4);
+}
+
+.section-search input[type="text"] {
+  flex: 1;
+  min-width: 240px;
+}
+
+/* ------------------------------------------
+   🌞 Browse By Brand
+   ------------------------------------------ */
+
+.section-brands {
+  padding: var(--space-6) 0;
+}
+
+.brand-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin-top: var(--space-2);
+}
+
+.brand-pill {
+  padding: var(--space-2) var(--space-4);
+  background: var(--color-bg-alt);
+  border-radius: 6px;
+  border: 1px solid var(--color-border);
+  cursor: pointer;
+}
+
+.brand-pill:hover {
+  background: var(--color-accent-light);
+  border-color: var(--color-accent);
+}
+
+/* ------------------------------------------
+   🌞 Top Picks
+   ------------------------------------------ */
+
+.card-row {
+  display: flex;
+  gap: var(--space-4);
+  flex-wrap: wrap;
+}
+
+.card {
+  border: 1px solid var(--color-border);
+  background: var(--color-bg-alt);
+  padding: var(--space-4);
+  border-radius: 10px;
+  width: 180px;
+  text-align: left;
+}
+
+/* ------------------------------------------
+   🌞 Recommender Placeholder
+   ------------------------------------------ */
+
+.recommender-box {
+  border: 1px solid var(--color-border);
+  background: var(--color-bg-alt);
+  padding: var(--space-5);
+  border-radius: 10px;
+  text-align: center;
+  color: var(--color-text-light);
+}
+
+/* ------------------------------------------
+   🌞 About Section
+   ------------------------------------------ */
+
+.about-box {
+  border: 1px solid var(--color-border);
+  background: var(--color-bg-alt);
+  padding: var(--space-5);
+  border-radius: 10px;
+}
+
+/* ------------------------------------------
+   🌞 Final Polish
+   ------------------------------------------ */
+
+button, .brand-pill, .card {
+  transition: all 0.2s ease;
 }
 /* Dropdown container */
 .dropdown {
