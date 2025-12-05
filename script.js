@@ -258,3 +258,48 @@ loadSunscreens().then(all => {
     setupSearch(all);
   }
 });
+//
+// FULL BRAND GRID + TOGGLE LOGIC
+//
+function displayFullBrandGrid(all) {
+  const fullList = document.getElementById("allBrandGrid");
+  if (!fullList) return;
+
+  const brands = [...new Set(all.map(item => item.brand))].sort();
+
+  fullList.innerHTML = brands
+    .map(brand => `<a href="#" data-brand="${brand}">${brand}</a>`)
+    .join("");
+
+  fullList.querySelectorAll("a").forEach(link => {
+    link.addEventListener("click", (e) => {
+      e.preventDefault();
+      const brand = e.target.dataset.brand;
+      const filtered = all.filter(item => item.brand === brand);
+
+      displaySunscreens(filtered);
+    });
+  });
+}
+
+
+//
+// EXPAND/COLLAPSE FULL BRAND LIST
+//
+document.addEventListener("DOMContentLoaded", () => {
+  const btn = document.getElementById("showAllBrandsBtn");
+  const fullList = document.getElementById("allBrandGrid");
+
+  if (btn && fullList) {
+    btn.addEventListener("click", () => {
+      if (fullList.style.display === "none") {
+        fullList.style.display = "flex";
+        btn.textContent = "Hide All Brands";
+      } else {
+        fullList.style.display = "none";
+        btn.textContent = "Show All Brands";
+      }
+    });
+  }
+});
+
