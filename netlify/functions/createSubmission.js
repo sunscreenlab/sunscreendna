@@ -1,4 +1,17 @@
 exports.handler = async function(event, context) {
+  // Handle CORS preflight request
+  if (event.httpMethod === "OPTIONS") {
+    return {
+      statusCode: 204,
+      headers: {
+        "Access-Control-Allow-Origin": "https://sunscreenlab.github.io",
+        "Access-Control-Allow-Headers": "Content-Type",
+        "Access-Control-Allow-Methods": "POST, OPTIONS",
+      },
+      body: ""
+    };
+  }
+
   try {
     const body = JSON.parse(event.body);
 
@@ -29,32 +42,29 @@ Submitted from: Add a Sunscreen form
       }
     );
 
-    const text = await response.text();   // ⬅️ IMPORTANT
-    console.log("GitHub response:", text); // ⬅️ PRINT IT TO LOGS
+    const text = await response.text();
+    console.log("GitHub response:", text);
 
-    if (!response.ok) {
-      return {
-        statusCode: 500,
-        body: JSON.stringify({
-          message: "Failed to create issue",
-          details: text
-        })
-      };
-    }
+    const success = response.ok;
 
     return {
-      statusCode: 200,
-      body: JSON.stringify({ message: "Submission received! Thank you." })
+      statusCode: success ? 200 : 500,
+      headers: {
+        "Access-Control-Allow-Origin": "https://sunscreenlab.github.io",
+      },
+      body: success
+        ? JSON.stringify({ message: "Submission received! Thank you." })
+        : JSON.stringify({ message: "Failed to create issue", details: text })
     };
 
   } catch (err) {
-    console.log("Function error:", err); // ⬅️ ALSO PRINT
+    console.log("Function error:", err);
     return {
       statusCode: 500,
-      body: JSON.stringify({
-        message: "Error processing submission",
-        error: err.message
-      })
+      headers: {
+        "Access-Control-Allow-Origin": "https://sunscreenlab.github.io",
+      },
+      body: JSON.stringify({ message: "Error processing submission", error: err.message })
     };
   }
 };
