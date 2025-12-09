@@ -1,7 +1,7 @@
 /* ------------------------------------------
    🌞 The Sunscreen Lab — Global Foundation
    Hybrid Minimal + Scientific Style
-   ------------------------------------------ */
+------------------------------------------- */
 
 /* 1. Reset / Normalize */
 * {
@@ -23,7 +23,7 @@
   --color-accent: #0a85ff;
   --color-accent-light: #e5f3ff;
 
-  /* spacing scale */
+  /* Spacing scale */
   --space-1: 4px;
   --space-2: 8px;
   --space-3: 12px;
@@ -32,21 +32,18 @@
   --space-6: 32px;
 }
 
-/* 3. Apply global background + text */
+/* 3. Apply global styles */
 body {
   font-family: var(--font-main);
   background: var(--color-bg);
   color: var(--color-text);
   line-height: 1.6;
-
-  /* Remove the padding that breaks the hero */
   padding: 0;
-
   max-width: 900px;
   margin: 0 auto;
 }
 
-/* 4. Section layout */
+/* 4. Structural sections */
 .section {
   padding: var(--space-6) 0;
   border-bottom: 1px solid var(--color-border);
@@ -65,7 +62,6 @@ h1 {
 
 h2 {
   font-size: 1.4rem;
-  margin-bottom: var(--space-3);
 }
 
 /* 6. Button styling */
@@ -80,7 +76,8 @@ button {
   transition: background 0.2s ease;
 }
 
-button:hover {
+button:hover,
+header button:hover {
   background: #0669cc;
 }
 
@@ -96,7 +93,7 @@ input[type="text"] {
 
 /* ------------------------------------------
    🌞 Navigation Bar
-   ------------------------------------------ */
+------------------------------------------- */
 
 header {
   background: var(--color-bg);
@@ -115,15 +112,10 @@ header {
   align-items: center;
 }
 
-header button:hover {
-  background: #0669cc;
-}
-
 /* ------------------------------------------
-   🌞 FIXED HERO SECTION (FULL-WIDTH BANNER)
-   ------------------------------------------ */
+   🌞 Hero Banner (full-width)
+------------------------------------------- */
 
-/* FULL-WIDTH HERO EVEN WITH BODY MAX-WIDTH */
 .section-hero {
   position: relative;
   left: 50%;
@@ -131,13 +123,11 @@ header button:hover {
   width: 100vw;
   margin-left: -50vw;
   margin-right: -50vw;
-
-  height: 180px;   /* Adjust to control how much of the top shows */
-  padding: 0;
+  height: 180px;
 
   background-image: url("../images/Cropped_sunscreenlabbanner.png");
-  background-size: cover;            /* Fills width without shrinking */
-  background-position: top center;   /* Show the TOP portion */
+  background-size: cover;
+  background-position: top center;
   background-repeat: no-repeat;
 
   display: flex;
@@ -145,7 +135,6 @@ header button:hover {
   justify-content: flex-end;
 }
 
-/* TEXT BLOCK INSIDE HERO */
 .section-hero-text {
   padding: var(--space-5);
   padding-bottom: var(--space-6);
@@ -165,7 +154,7 @@ header button:hover {
 
 /* ------------------------------------------
    🌞 Search Section
-   ------------------------------------------ */
+------------------------------------------- */
 
 .section-search {
   padding: var(--space-6) 0;
@@ -179,14 +168,40 @@ header button:hover {
   margin-bottom: var(--space-4);
 }
 
-.section-search input[type="text"] {
+/* CLEAN, SINGLE VERSION OF SEARCH BAR */
+.search-bar {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin: 20px 0;
+}
+
+.search-bar input {
   flex: 1;
-  min-width: 240px;
+  padding: 10px 12px;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+}
+
+.search-bar button {
+  background: var(--color-accent);
+  border: none;
+  padding: 10px 14px;
+  font-size: 1.1rem;
+  color: white;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.search-bar button:hover {
+  background: #076fcc;
 }
 
 /* ------------------------------------------
    🌞 Browse By Brand
-   ------------------------------------------ */
+------------------------------------------- */
 
 .section-brands {
   padding: var(--space-6) 0;
@@ -205,6 +220,7 @@ header button:hover {
   border-radius: 6px;
   border: 1px solid var(--color-border);
   cursor: pointer;
+  transition: all 0.2s ease;
 }
 
 .brand-pill:hover {
@@ -213,8 +229,8 @@ header button:hover {
 }
 
 /* ------------------------------------------
-   🌞 Top Picks
-   ------------------------------------------ */
+   🌞 Top Picks Cards
+------------------------------------------- */
 
 .card-row {
   display: flex;
@@ -228,26 +244,14 @@ header button:hover {
   padding: var(--space-4);
   border-radius: 10px;
   width: 180px;
-  text-align: left;
+  transition: all 0.2s ease;
 }
 
 /* ------------------------------------------
-   🌞 Recommender Placeholder
-   ------------------------------------------ */
+   🌞 Recommender + About
+------------------------------------------- */
 
-.recommender-box {
-  border: 1px solid var(--color-border);
-  background: var(--color-bg-alt);
-  padding: var(--space-5);
-  border-radius: 10px;
-  text-align: center;
-  color: var(--color-text-light);
-}
-
-/* ------------------------------------------
-   🌞 About Section
-   ------------------------------------------ */
-
+.recommender-box,
 .about-box {
   border: 1px solid var(--color-border);
   background: var(--color-bg-alt);
@@ -256,57 +260,42 @@ header button:hover {
 }
 
 /* ------------------------------------------
-   🌞 Final Polish
-   ------------------------------------------ */
+   🌞 Dropdown Menu
+------------------------------------------- */
 
-button, .brand-pill, .card {
-  transition: all 0.2s ease;
-}
-/* Dropdown container */
-.dropdown {
-  position: relative;
-  display: inline-block;
-}
+.dropdown { position: relative; display: inline-block; }
+.dropdown-btn { cursor: pointer; }
 
-/* Dropdown trigger button */
-.dropdown-btn {
-  cursor: pointer;
-}
-
-/* Dropdown menu */
 .dropdown-content {
   display: none;
   position: absolute;
-  background-color: white;
+  background: white;
   min-width: 180px;
   box-shadow: 0px 4px 8px rgba(0,0,0,0.1);
   border: 1px solid #ccc;
-  z-index: 999;
   border-radius: 4px;
+  z-index: 999;
 }
 
-/* Dropdown links */
 .dropdown-content a {
   display: block;
   padding: 10px 14px;
-  text-decoration: none;
   color: #333;
+  text-decoration: none;
 }
 
 .dropdown-content a:hover {
-  background-color: #f0f0f0;
+  background: #f0f0f0;
 }
 
-/* Show dropdown on hover */
 .dropdown:hover .dropdown-content {
   display: block;
 }
+
 /* ------------------------------------------
-   LEGACY HOMEPAGE LAYOUT SUPPORT
-   (Brand grid, banner, menu links, quiz box)
+   🌞 Legacy Homepage Support
 ------------------------------------------- */
 
-/* Top menu container */
 #top-menu {
   padding: 10px;
   background: #f4f4f4;
@@ -314,13 +303,11 @@ button, .brand-pill, .card {
   gap: 10px;
 }
 
-/* "Explore Sunscreens" and "Add a Sunscreen" buttons */
 .menu-link {
   background: #e0e0e0;
   padding: 8px 12px;
   border-radius: 5px;
   text-decoration: none;
-  display: inline-block;
   color: black;
   font-weight: 600;
 }
@@ -329,7 +316,6 @@ button, .brand-pill, .card {
   background: #d2d2d2;
 }
 
-/* Brand grid (preview + full grid) */
 .brand-list {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -338,19 +324,17 @@ button, .brand-pill, .card {
 }
 
 .brand-list a {
-  text-decoration: none;
   color: #0057b7;
   font-weight: 600;
+  text-decoration: none;
 }
 
 .brand-list a:hover {
   text-decoration: underline;
 }
 
-/* Quiz placeholder styling */
 .quiz-placeholder {
-  margin-top: 25px;
-  margin-bottom: 35px;
+  margin: 25px 0 35px;
   padding: 18px 20px;
   background: #fafafa;
   border-left: 4px solid #0057b7;
@@ -358,41 +342,12 @@ button, .brand-pill, .card {
 }
 
 .quiz-placeholder h2 {
-  margin: 0 0 8px;
+  margin-bottom: 8px;
   font-size: 1.4em;
 }
 
-/* Banner inside index.html */
 .site-banner img {
   width: 100%;
   height: auto;
   display: block;
-}
-.search-bar {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  margin: 20px 0;
-}
-
-.search-bar input {
-  flex: 1;
-  padding: 10px 12px;
-  font-size: 1rem;
-  border: 1px solid #ccc;
-  border-radius: 6px;
-}
-
-.search-bar button {
-  background: var(--color-accent, #0a85ff);
-  border: none;
-  padding: 10px 14px;
-  font-size: 1.1rem;
-  color: white;
-  border-radius: 6px;
-  cursor: pointer;
-}
-
-.search-bar button:hover {
-  background: #076fcc;
 }
