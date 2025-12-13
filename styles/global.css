@@ -1,33 +1,35 @@
-/* ------------------------------------------
-   🌞 The Sunscreen Lab — Global Foundation
-   Hybrid Minimal + Scientific Style
-------------------------------------------- */
+/* ==========================================================
+   🌞 Sunscreen DNA — CANONICAL STYLESHEET
+   Hybrid Minimal + Scientific / Dermatology UI
+   ========================================================== */
 
-/* 1. Reset / Normalize */
+/* ----------------------------------------------------------
+   1. Reset / Normalize
+---------------------------------------------------------- */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
-/* 2. Global font + color tokens */
+/* ----------------------------------------------------------
+   2. Design Tokens
+---------------------------------------------------------- */
 :root {
   --font-main: "Inter", "Segoe UI", Arial, sans-serif;
 
-  /* Palette #2 — Dermatology Professional */
-  --color-bg: #EAE4DB;
-  --color-bg-alt: #F7F4EF;
-  --color-border: #CFC8BF;
-  --color-text: #1A1A1A;
-  --color-text-light: #6B6763;
+  /* Core palette */
+  --color-bg: #EAE4DB;          /* sand beige */
+  --color-bg-alt: #F7F4EF;      /* lighter beige */
+  --color-border: #CFC8BF;      /* warm neutral border */
+  --color-text: #1A1A1A;        /* primary text */
+  --color-text-light: #6B6763;  /* muted text */
 
-  /* Action / Interactive — Scientific Blue */
+  /* Scientific blue system */
   --color-action: #2F6F9F;
   --color-action-hover: #245A80;
   --color-action-soft: #E5F0F8;
-
-  /* Slightly softened primary action (for search button harmony) */
-  --color-action-primary: #3A7FB1;
+  --color-action-primary: #3A7FB1; /* softened primary for search */
 
   /* Spacing scale */
   --space-1: 4px;
@@ -38,24 +40,23 @@
   --space-6: 32px;
 }
 
-/* 3. Apply global styles */
+/* ----------------------------------------------------------
+   3. Global Base Styles
+---------------------------------------------------------- */
 body {
   font-family: var(--font-main);
   background: var(--color-bg);
   color: var(--color-text);
   line-height: 1.6;
-  padding: 0;
   max-width: 900px;
   margin: 0 auto;
 }
 
-/* 4. Structural sections */
 .section {
   padding: var(--space-6) 0;
   border-bottom: 1px solid var(--color-border);
 }
 
-/* 5. Headings */
 h1, h2, h3 {
   font-weight: 600;
   margin-bottom: var(--space-3);
@@ -63,21 +64,30 @@ h1, h2, h3 {
 
 h1 {
   font-size: 2rem;
-  margin-bottom: var(--space-4);
 }
 
 h2 {
   font-size: 1.4rem;
 }
 
-/* 6. Base Button Styling (default = neutral) */
+/* ----------------------------------------------------------
+   4. Inputs & Buttons (Neutral by Default)
+---------------------------------------------------------- */
+input[type="text"] {
+  padding: var(--space-3);
+  border-radius: 6px;
+  border: 1px solid var(--color-border);
+  width: 100%;
+  font-size: 1rem;
+}
+
 button {
   padding: var(--space-2) var(--space-4);
   background: white;
   border: 1px solid var(--color-border);
   border-radius: 6px;
   color: var(--color-text);
-  font-size: 0.9rem;
+  font-size: 0.95rem;
   cursor: pointer;
   transition: background 0.2s ease, border-color 0.2s ease;
 }
@@ -87,20 +97,9 @@ button:hover {
   border-color: var(--color-action);
 }
 
-/* 7. Input fields */
-input[type="text"] {
-  padding: var(--space-3);
-  border-radius: 6px;
-  border: 1px solid var(--color-border);
-  width: 100%;
-  font-size: 1rem;
-  margin: var(--space-2) 0;
-}
-
-/* ------------------------------------------
-   🌞 Navigation Bar
-------------------------------------------- */
-
+/* ----------------------------------------------------------
+   5. Header / Navigation
+---------------------------------------------------------- */
 header {
   background: var(--color-bg);
   padding: var(--space-5) var(--space-4);
@@ -116,13 +115,13 @@ header {
   align-items: center;
   gap: 12px;
   padding: 12px 20px;
+  flex-wrap: wrap;
 }
 
-/* Unified nav sizing */
+/* Unified nav control sizing */
 .nav-row button,
 .nav-row .dropdown-btn,
 .nav-row .menu-link {
-  font-size: 16px;
   height: 42px;
   padding: 0 16px;
   display: flex;
@@ -131,21 +130,13 @@ header {
   background: white;
   color: var(--color-text);
   border: 1px solid var(--color-border);
+  font-size: 16px;
   cursor: pointer;
 }
 
-/* Neutral buttons become blue-aware on hover */
-.nav-row button:hover,
-.nav-row .dropdown-btn:hover,
-.nav-row .menu-link:hover {
-  background: var(--color-action-soft);
-  border-color: var(--color-action);
-}
-
-/* ------------------------------------------
-   🌞 Search Bar (Primary Action)
-------------------------------------------- */
-
+/* ----------------------------------------------------------
+   6. Search Bar (Primary Action)
+---------------------------------------------------------- */
 .search-bar {
   display: flex;
   align-items: center;
@@ -165,14 +156,13 @@ header {
 .search-bar button {
   border: none;
   background: var(--color-action-primary);
-  padding: 0 12px;
-  font-size: 18px;
+  padding: 0 14px;
   height: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
-
   color: #FFFFFF;
+  font-size: 18px;
   font-weight: 700;
 }
 
@@ -188,10 +178,48 @@ header {
   opacity: 0.95;
 }
 
-/* ------------------------------------------
-   🌞 Hero Banner
-------------------------------------------- */
+/* ----------------------------------------------------------
+   7. Dropdown Menu
+---------------------------------------------------------- */
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
 
+.dropdown-btn {
+  cursor: pointer;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background: white;
+  min-width: 220px;
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  z-index: 1000;
+}
+
+.dropdown-content a {
+  display: block;
+  padding: 10px 14px;
+  color: var(--color-text);
+  text-decoration: none;
+  font-size: 0.95rem;
+}
+
+.dropdown-content a:hover {
+  background: var(--color-action-soft);
+}
+
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+
+/* ----------------------------------------------------------
+   8. Hero Banner (Full Width)
+---------------------------------------------------------- */
 .section-hero {
   position: relative;
   left: 50%;
@@ -200,27 +228,72 @@ header {
   margin-left: -50vw;
   margin-right: -50vw;
   height: 180px;
+
+  background-image: url("../images/Cropped_sunscreenlabbanner.png");
   background-size: cover;
   background-position: top center;
   background-repeat: no-repeat;
+
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
 }
 
-/* ------------------------------------------
-   🌞 Browse By Brand
-------------------------------------------- */
+.section-hero-text {
+  padding: var(--space-5);
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+/* ----------------------------------------------------------
+   9. Browse by Brand
+---------------------------------------------------------- */
+.section-brands {
+  padding: var(--space-6) 0;
+}
+
+.brand-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin-top: var(--space-2);
+}
+
+.brand-pill {
+  padding: var(--space-2) var(--space-4);
+  background: var(--color-bg-alt);
+  border-radius: 6px;
+  border: 1px solid var(--color-border);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
 
 .brand-pill:hover {
   background: var(--color-action-soft);
   border-color: var(--color-action);
 }
 
-/* ------------------------------------------
-   🌞 Legacy / Supporting Elements
-------------------------------------------- */
+/* ----------------------------------------------------------
+   10. Cards / Boxes
+---------------------------------------------------------- */
+.card {
+  border: 1px solid var(--color-border);
+  background: var(--color-bg-alt);
+  padding: var(--space-4);
+  border-radius: 10px;
+}
 
+.recommender-box,
+.about-box {
+  border: 1px solid var(--color-border);
+  background: var(--color-bg-alt);
+  padding: var(--space-5);
+  border-radius: 10px;
+}
+
+/* ----------------------------------------------------------
+   11. Legacy / Supporting Elements
+---------------------------------------------------------- */
 .brand-list a {
   color: var(--color-action);
   font-weight: 600;
@@ -233,5 +306,9 @@ header {
 }
 
 .quiz-placeholder {
+  margin: 25px 0 35px;
+  padding: 18px 20px;
+  background: var(--color-bg-alt);
   border-left: 4px solid var(--color-action);
+  border-radius: 6px;
 }
