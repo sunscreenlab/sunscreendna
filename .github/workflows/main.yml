@@ -1,0 +1,12 @@
+name: Sunscreen Submission Intake
+
+on:
+  repository_dispatch:
+    types: [sunscreen_submission]
+
+jobs:
+  intake:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Acknowledge submission event
+        run: echo "Sunscreen submission event received"
