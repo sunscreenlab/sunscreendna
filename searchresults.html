@@ -33,19 +33,19 @@
           ingredient_text: item.ingredients?.join(" ") || ""
         }));
 
-const fuse = new Fuse(processed, {
-  includeScore: true,
-  threshold: 0.32,
-  keys: [
-    "brand",
-    "product",
-    "notes",
-    "type",
-    "country",
-    "filter_names",
-    "ingredient_text"
-  ]
-});
+        const fuse = new Fuse(processed, {
+          includeScore: true,
+          threshold: 0.32,
+          keys: [
+            "brand",
+            "product",
+            "notes",
+            "type",
+            "country",
+            "filter_names",
+            "ingredient_text"
+          ]
+        });
 
         const results = query ? fuse.search(query) : [];
         const container = document.getElementById("results");
@@ -60,13 +60,16 @@ const fuse = new Fuse(processed, {
           return;
         }
 
-
         // ---- RENDER RESULTS ----
         container.innerHTML = results
           .map(r => {
             const item = r.item;
 
             const title = `${item.brand} – ${item.product}`;
+
+            const typeLabel = item.type
+              ? item.type.charAt(0).toUpperCase() + item.type.slice(1)
+              : "Unknown";
 
             return `
               <div class="result-card">
@@ -76,7 +79,7 @@ const fuse = new Fuse(processed, {
                   </a>
                 </h3>
 
-                <p class="result-meta"><strong>Type:</strong> ${item.type || "Unknown"}</p>
+                <p class="result-meta"><strong>Type:</strong> ${typeLabel}</p>
 
                 <p class="result-meta"><strong>Filters:</strong>
                   ${item.filter_names.length ? item.filter_names.join(", ") : "None listed"}
