@@ -92,6 +92,43 @@ button:hover {
    5. Header / Navigation (FIXED)
 ---------------------------------------------------------- */
 
+/* ==============================
+   Primary CTA Button (Header)
+   ============================== */
+
+.menu-link-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 10px 18px;
+  margin-left: 12px;
+
+  font-size: 0.95rem;
+  font-weight: 600;
+  text-decoration: none;
+
+  color: #ffffff;
+  background-color: var(--color-accent);
+
+  border-radius: 8px;
+  border: none;
+
+  transition: background-color 0.2s ease, transform 0.1s ease;
+}
+
+/* Hover / focus states */
+.menu-link-primary:hover,
+.menu-link-primary:focus-visible {
+  background-color: #006fd6; /* slightly darker accent */
+  transform: translateY(-1px);
+}
+
+/* Active (click) */
+.menu-link-primary:active {
+  transform: translateY(0);
+}
+
 /* Hide hamburger on desktop */
 .nav-toggle {
   display: none;
