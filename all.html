@@ -3,32 +3,155 @@
 <head>
   <meta charset="UTF-8" />
   <title>All Sunscreens – Sunscreen DNA</title>
-  <link rel="icon" type="image/png" href="favicon.png">
 
-  <!-- Global stylesheet -->
+  <link rel="icon" type="image/png" href="images/favicon.png">
   <link rel="stylesheet" href="styles/global.css">
 
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 
 <body>
 
-  <div class="site-banner">
-    <img src="SunscreenLabBanner.jpg" alt="The Sunscreen Lab Banner">
-  </div>
+  <!-- ==========================================
+       PAGE HEADER
+       ========================================== -->
+  <section class="section">
+    <h1>All Sunscreens</h1>
+    <p>
+      Browse and filter all sunscreens currently in the Sunscreen DNA database.
+      Filter type (mineral, chemical, hybrid) is determined automatically based
+      on the UV filters used.
+    </p>
 
-  <p><a href="index.html">← Back to Home</a></p>
+    <p style="margin-top: 8px;">
+      <a href="index.html">← Back to Home</a>
+    </p>
+  </section>
 
-  <h1>All Sunscreens</h1>
-  <p>Complete list of all sunscreens in the database.</p>
+  <!-- ==========================================
+       FILTER BAR
+       ========================================== -->
+  <section class="section">
+    <div style="display:flex; gap:16px; flex-wrap:wrap;">
 
-  <div id="results"></div>
+      <!-- Region -->
+      <div>
+        <label for="regionFilter"><strong>Region</strong></label><br>
+        <select id="regionFilter">
+          <option value="">All</option>
+          <option value="US">United States</option>
+          <option value="EU">EU</option>
+          <option value="Korea">Korea</option>
+          <option value="Japan">Japan</option>
+          <option value="Australia">Australia</option>
+        </select>
+      </div>
 
+      <!-- Filter Type (derived) -->
+      <div>
+        <label for="typeFilter"><strong>Filter Type</strong></label><br>
+        <select id="typeFilter">
+          <option value="">All</option>
+          <option value="Mineral">Mineral</option>
+          <option value="Chemical">Chemical</option>
+          <option value="Hybrid">Hybrid</option>
+        </select>
+      </div>
+
+      <div style="align-self:flex-end;">
+        <button id="resetFilters">Reset Filters</button>
+      </div>
+
+    </div>
+
+    <p
+      id="resultsSummary"
+      style="margin-top:12px; color:var(--color-text-light);"
+    ></p>
+  </section>
+
+  <!-- ==========================================
+       RESULTS TABLE
+       ========================================== -->
+  <section class="section">
+    <div style="overflow-x:auto;">
+      <table style="width:100%; border-collapse:collapse;">
+        <thead>
+          <tr style="text-align:left; border-bottom:1px solid var(--color-border);">
+            <th style="padding:8px;">Brand</th>
+            <th style="padding:8px;">Product</th>
+            <th style="padding:8px;">SPF</th>
+            <th style="padding:8px;">Region</th>
+            <th style="padding:8px;">Filter Type</th>
+          </tr>
+        </thead>
+        <tbody id="resultsTable"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ==========================================
+       DATA + LOGIC
+       ========================================== -->
   <script src="script.js"></script>
 
   <script>
-    // Load all sunscreens (use the brand-including display function)
-    loadSunscreens().then(all => {
-      displaySunscreensWithBrand(all);
+    let allSunscreens = [];
+
+    function applyFilters() {
+      const region = document.getElementById("regionFilter").value;
+      const type = document.getElementById("typeFilter").value;
+
+      const filtered = allSunscreens.filter(s => {
+        const derivedType = getFilterType(s.filters || []);
+
+        return (!region || s.region === region) &&
+               (!type || derivedType === type);
+      });
+
+      renderTable(filtered);
+    }
+
+    function renderTable(data) {
+      const table = document.getElementById("resultsTable");
+      table.innerHTML = "";
+
+      data.forEach(s => {
+        const row = document.createElement("tr");
+
+        const filterType = getFilterType(s.filters || []);
+
+        row.innerHTML = `
+          <td style="padding:8px;">${s.brand || ""}</td>
+          <td style="padding:8px;">${s.name || ""}</td>
+          <td style="padding:8px;">${s.spf || ""}</td>
+          <td style="padding:8px;">${s.region || ""}</td>
+          <td style="padding:8px;">${filterType}</td>
+        `;
+
+        table.appendChild(row);
+      });
+
+      document.getElementById("resultsSummary").textContent =
+        `Showing ${data.length} sunscreen${data.length !== 1 ? "s" : ""}`;
+    }
+
+    document.getElementById("regionFilter")
+      .addEventListener("change", applyFilters);
+
+    document.getElementById("typeFilter")
+      .addEventListener("change", applyFilters);
+
+    document.getElementById("resetFilters")
+      .addEventListener("click", () => {
+        document.getElementById("regionFilter").value = "";
+        document.getElementById("typeFilter").value = "";
+        applyFilters();
+      });
+
+    loadSunscreens().then(data => {
+      allSunscreens = data;
+      renderTable(allSunscreens);
     });
   </script>
 

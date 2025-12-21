@@ -159,3 +159,13 @@ const siteNav = document.querySelector(".site-nav");
 navToggle.addEventListener("click", () => {
   siteNav.classList.toggle("open");
 });
+function getFilterType(filters) {
+  const mineral = ["Zinc Oxide", "Titanium Dioxide"];
+
+  const hasMineral = filters.some(f => mineral.includes(f));
+  const hasChemical = filters.some(f => !mineral.includes(f));
+
+  if (hasMineral && hasChemical) return "Hybrid";
+  if (hasMineral) return "Mineral";
+  return "Chemical";
+}
