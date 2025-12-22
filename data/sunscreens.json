@@ -12,6 +12,7 @@
     "texture_finish": "natural-dewy",
     "white_cast": 0,
     "country": "Korea",
+    "korean": true,
     "fragrance": "none",
     "filters": [
       {

@@ -63,7 +63,7 @@
   <h1>All Sunscreens</h1>
   <p>
     Browse and filter all sunscreens currently in the Sunscreen DNA database.
-    Filter type is determined automatically from UV filters used.
+    Filter type is derived from UV filters used.
   </p>
 </section>
 
@@ -100,10 +100,18 @@
     <!-- FILTER TYPE -->
     <div>
       <strong>Filter Type</strong><br>
-
       <label><input type="checkbox" name="filterType" value="Mineral"> Mineral</label><br>
       <label><input type="checkbox" name="filterType" value="Chemical"> Chemical</label><br>
       <label><input type="checkbox" name="filterType" value="Hybrid"> Hybrid</label>
+    </div>
+
+    <!-- SPECIAL FILTERS -->
+    <div>
+      <strong>Special</strong><br>
+      <label>
+        <input type="checkbox" id="koreanFilter">
+        Korean sunscreen
+      </label>
     </div>
 
     <!-- REGION (unchanged) -->
@@ -194,6 +202,7 @@ function applyFilters() {
   const region = document.getElementById("regionFilter").value;
   const selectedTypes = getSelectedFilterTypes();
   const selectedBrands = getSelectedBrands();
+  const koreanOnly = document.getElementById("koreanFilter").checked;
 
   let filtered = allSunscreens.filter(s => {
     const derivedType = getFilterType(s.filters || []);
@@ -201,7 +210,8 @@ function applyFilters() {
     return (
       (!region || s.region === region) &&
       (selectedTypes.length === 0 || selectedTypes.includes(derivedType)) &&
-      (selectedBrands.length === 0 || selectedBrands.includes(s.brand))
+      (selectedBrands.length === 0 || selectedBrands.includes(s.brand)) &&
+      (!koreanOnly || s.korean === true)
     );
   });
 
@@ -265,6 +275,8 @@ document.getElementById("brandSearch").addEventListener("input", e => {
 });
 
 document.getElementById("regionFilter").addEventListener("change", applyFilters);
+document.getElementById("koreanFilter").addEventListener("change", applyFilters);
+
 document.querySelectorAll("input[name='filterType']").forEach(cb =>
   cb.addEventListener("change", applyFilters)
 );
@@ -272,6 +284,8 @@ document.querySelectorAll("input[name='filterType']").forEach(cb =>
 document.getElementById("resetFilters").addEventListener("click", () => {
   document.getElementById("regionFilter").value = "";
   document.getElementById("brandSearch").value = "";
+  document.getElementById("koreanFilter").checked = false;
+
   document.querySelectorAll("input[type='checkbox']").forEach(cb => cb.checked = false);
   renderBrandList();
   applyFilters();
