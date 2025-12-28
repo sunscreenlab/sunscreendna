@@ -1,8 +1,8 @@
 const fs = require("fs");
 
 // === CONFIG ===
-const INPUT_FILE = "../data/sunscreens.json";
-const OUTPUT_FILE = "../data/sunscreens.cleaned.json";
+const INPUT_FILE = "data/sunscreens.json";
+const OUTPUT_FILE = "data/sunscreens.cleaned.json";
 
 // fields you want REMOVED
 const FIELDS_TO_REMOVE = [
@@ -13,7 +13,8 @@ const FIELDS_TO_REMOVE = [
   "texture_finish",
   "fragrance",
   "safety_scores",
-  "barrier_support"
+  "barrier_support",
+  "niacinamide"
 ];
 
 // field to sort by (must exist on all objects)
