@@ -1,0 +1,71 @@
+name: Approved sunscreen → draft processing
+
+on:
+  issues:
+    types: [labeled]
+
+permissions:
+  issues: write
+
+jobs:
+  process-approved-sunscreen:
+    if: github.event.label.name == 'approved'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Log trigger info
+        run: |
+          echo "Issue #${{ github.event.issue.number }} labeled 'approved'"
+          echo "Title: ${{ github.event.issue.title }}"
+
+      - name: Parse sunscreen
+        working-directory: .github/scripts
+        env:
+          ISSUE_BODY: ${{ github.event.issue.body }}
+        run: |
+          npm install
+          node parse-sunscreen.js
+
+      - name: Generate sunscreen ID (log only)
+        run: node scripts/generateSunscreenEntry.js
+        env:
+          SUNSCREEN_BRAND: ${{ env.SUNSCREEN_BRAND }}
+          SUNSCREEN_PRODUCT: ${{ env.SUNSCREEN_PRODUCT }}
+
+      # ✅ NEW: write to sunscreens.json (can fail on duplicate)
+      - name: Write sunscreen to JSON
+        run: node scripts/write-sunscreen-json.js
+
+      # 🚨 NEW: notify only if something failed
+      - name: Notify on duplicate rejection
+        if: failure()
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          curl -X POST \
+            -H "Authorization: Bearer $GITHUB_TOKEN" \
+            -H "Accept: application/vnd.github+json" \
+            https://api.github.com/repos/${{ github.repository }}/issues/${{ github.event.issue.number }}/comments \
+            -d '{
+              "body": "❌ **Duplicate sunscreen detected**\n\nAn entry with this sunscreen ID already exists in `sunscreens.json`.\n\nNo data was changed. This submission requires manual review to determine whether it is a true duplicate or needs disambiguation."
+            }'
+
+      - name: Post acknowledgement comment
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          curl -X POST \
+            -H "Authorization: Bearer $GITHUB_TOKEN" \
+            -H "Accept: application/vnd.github+json" \
+            https://api.github.com/repos/${{ github.repository }}/issues/${{ github.event.issue.number }}/comments \
+            -d '{
+              "body": "Submission approved.\n\nThis sunscreen has been marked as approved.\nAutomation has detected the approval and will process it shortly.\n\n(Draft processing only — no data has been published yet.)"
+            }'
