@@ -38,14 +38,15 @@ jobs:
       - name: Write sunscreen to JSON
         run: node scripts/write-sunscreen-json.js
 
-      - name: Commit sunscreens.json
-        run: |
-          git config user.name "sunscreen-bot"
-          git config user.email "sunscreen-bot@users.noreply.github.com"
-          git status
-          git add sunscreens.json
-          git commit -m "Add sunscreen: $SUNSCREEN_ID"
-          git push
+- name: Commit sunscreens.json
+  run: |
+    git config user.name "sunscreen-bot"
+    git config user.email "sunscreen-bot@users.noreply.github.com"
+    git status
+    git add data/sunscreens.json
+    git commit -m "Add sunscreen: $SUNSCREEN_ID"
+    git push
+
 
       - name: Notify on duplicate rejection
         if: failure()
