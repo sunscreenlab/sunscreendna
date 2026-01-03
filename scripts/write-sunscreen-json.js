@@ -1,6 +1,7 @@
 import fs from "fs";
 import path from "path";
 import { fileURLToPath } from "url";
+import { sanitizeSunscreen } from "./sanitize-sunscreen.js";
 
 // ----------------------------
 // ESM __dirname FIX
@@ -15,7 +16,8 @@ const __dirname = path.dirname(__filename);
 
 const {
   SUNSCREEN_ID,
-  SUNSCREEN_CANONICAL_JSON
+  SUNSCREEN_CANONICAL_JSON,
+  SUNSCREEN_DRY_RUN
 } = process.env;
 
 if (!SUNSCREEN_ID || !SUNSCREEN_CANONICAL_JSON) {
@@ -26,9 +28,14 @@ if (!SUNSCREEN_ID || !SUNSCREEN_CANONICAL_JSON) {
   process.exit(1);
 }
 
+const DRY_RUN = SUNSCREEN_DRY_RUN === "true";
+
+// ----------------------------
+// DECODE CANONICAL OBJECT
+// ----------------------------
+
 let canonical;
 try {
-  // 🔐 Decode Base64, then parse JSON
   canonical = JSON.parse(
     Buffer.from(SUNSCREEN_CANONICAL_JSON, "base64").toString("utf8")
   );
@@ -38,7 +45,80 @@ try {
 }
 
 // ----------------------------
-// FILE PATH (CORRECT + STABLE)
+// INGREDIENT TOKEN MERGING
+// ----------------------------
+
+function mergeIngredientTokens(ingredients) {
+  const merged = [];
+
+  for (let i = 0; i < ingredients.length; i++) {
+    const current = ingredients[i];
+    const next = ingredients[i + 1];
+
+    // Merge numeric fragments: "1" + "2-Hexanediol"
+    if (
+      /^\d+$/.test(current) &&
+      typeof next === "string" &&
+      /^[\d\-]/.test(next)
+    ) {
+      merged.push(`${current},${next}`);
+      i++; // skip next
+      continue;
+    }
+
+    // Merge ppm fragments: "2" + "202 ppm"
+    if (
+      /^\d+$/.test(current) &&
+      typeof next === "string" &&
+      /^\d+\s*ppm/i.test(next)
+    ) {
+      merged.push(`${current},${next}`);
+      i++;
+      continue;
+    }
+
+    merged.push(current);
+  }
+
+  return merged;
+}
+
+if (Array.isArray(canonical.ingredients)) {
+  canonical.ingredients = mergeIngredientTokens(canonical.ingredients);
+}
+
+// ----------------------------
+// SANITIZE SUNSCREEN
+// ----------------------------
+
+let sanitized;
+let warnings;
+
+try {
+  const result = sanitizeSunscreen(canonical);
+  sanitized = result.sunscreen;
+  warnings = result.warnings;
+} catch (err) {
+  console.error("❌ Sanitization failed:", err.message);
+  process.exit(1);
+}
+
+// ----------------------------
+// ENUM ENFORCEMENT (FATAL)
+// ----------------------------
+
+const ALLOWED_TYPES = ["chemical", "mineral", "hybrid"];
+
+if (!ALLOWED_TYPES.includes(sanitized.type)) {
+  console.error(
+    `❌ Invalid sunscreen type "${sanitized.type}".\n` +
+    `Allowed values: ${ALLOWED_TYPES.join(", ")}`
+  );
+  process.exit(1);
+}
+
+// ----------------------------
+// FILE PATH
 // ----------------------------
 
 const DATA_FILE = path.resolve(
@@ -57,44 +137,54 @@ let data = [];
 if (fs.existsSync(DATA_FILE)) {
   try {
     data = JSON.parse(fs.readFileSync(DATA_FILE, "utf-8"));
-
     if (!Array.isArray(data)) {
       throw new Error("sunscreens.json is not an array");
     }
   } catch (err) {
-    console.error(
-      "❌ Failed to read sunscreens.json:",
-      err.message
-    );
+    console.error("❌ Failed to read sunscreens.json:", err.message);
     process.exit(1);
   }
 }
 
 // ----------------------------
-// DUPLICATE CHECK (REJECT)
+// DUPLICATE CHECK (FATAL)
 // ----------------------------
 
-const index = data.findIndex(item => item.id === SUNSCREEN_ID);
-
-if (index >= 0) {
+if (data.some(item => item.id === SUNSCREEN_ID)) {
   console.error(
-    "❌ Duplicate sunscreen detected.\n\n" +
-    `An entry with id "${SUNSCREEN_ID}" already exists in sunscreens.json.\n\n` +
-    "No data was written. This submission requires manual review."
+    "❌ Duplicate sunscreen detected.\n" +
+    `An entry with id "${SUNSCREEN_ID}" already exists.`
   );
   process.exit(1);
 }
 
 // ----------------------------
-// APPEND NEW ENTRY
+// WARNINGS SUMMARY
 // ----------------------------
 
-console.log(`➕ Adding new sunscreen: ${SUNSCREEN_ID}`);
-data.push(canonical);
+if (warnings.length > 0) {
+  console.log("⚠️ Sanitizer warnings:");
+  for (const w of warnings) {
+    console.log(" -", JSON.stringify(w));
+  }
+}
+
+// ----------------------------
+// DRY RUN SUPPORT
+// ----------------------------
+
+if (DRY_RUN) {
+  console.log("🧪 DRY RUN MODE ENABLED");
+  console.log(JSON.stringify(sanitized, null, 2));
+  process.exit(0);
+}
 
 // ----------------------------
 // WRITE BACK TO FILE
 // ----------------------------
+
+console.log(`➕ Adding new sunscreen: ${SUNSCREEN_ID}`);
+data.push(sanitized);
 
 try {
   fs.writeFileSync(
@@ -104,9 +194,6 @@ try {
   );
   console.log("✅ sunscreens.json updated successfully.");
 } catch (err) {
-  console.error(
-    "❌ Failed to write sunscreens.json:",
-    err.message
-  );
+  console.error("❌ Failed to write sunscreens.json:", err.message);
   process.exit(1);
 }
