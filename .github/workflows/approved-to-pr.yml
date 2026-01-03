@@ -10,7 +10,9 @@ permissions:
 
 jobs:
   process-approved-sunscreen:
-    if: github.event.label.name == 'approved'
+    if: >
+      github.event.action == 'labeled' &&
+      contains(toLower(github.event.label.name), 'approved')
     runs-on: ubuntu-latest
 
     steps:
@@ -24,7 +26,7 @@ jobs:
 
       - name: Log trigger info
         run: |
-          echo "Issue #${{ github.event.issue.number }} labeled 'approved'"
+          echo "Issue #${{ github.event.issue.number }} labeled '${{ github.event.label.name }}'"
           echo "Title: ${{ github.event.issue.title }}"
 
       - name: Parse sunscreen
@@ -38,15 +40,14 @@ jobs:
       - name: Write sunscreen to JSON
         run: node scripts/write-sunscreen-json.js
 
-- name: Commit sunscreens.json
-  run: |
-    git config user.name "sunscreen-bot"
-    git config user.email "sunscreen-bot@users.noreply.github.com"
-    git status
-    git add data/sunscreens.json
-    git commit -m "Add sunscreen: $SUNSCREEN_ID"
-    git push
-
+      - name: Commit sunscreens.json
+        run: |
+          git config user.name "sunscreen-bot"
+          git config user.email "sunscreen-bot@users.noreply.github.com"
+          git status
+          git add data/sunscreens.json
+          git commit -m "Add sunscreen: $SUNSCREEN_ID"
+          git push
 
       - name: Notify on duplicate rejection
         if: failure()
@@ -58,7 +59,7 @@ jobs:
             -H "Accept: application/vnd.github+json" \
             https://api.github.com/repos/${{ github.repository }}/issues/${{ github.event.issue.number }}/comments \
             -d '{
-              "body": "❌ **Duplicate sunscreen detected**\n\nAn entry with this sunscreen ID already exists in `sunscreens.json`.\n\nNo data was changed. This submission requires manual review to determine whether it is a true duplicate or needs disambiguation."
+              "body": "❌ **Duplicate sunscreen detected**\n\nAn entry with this sunscreen ID already exists in `data/sunscreens.json`.\n\nNo data was changed. This submission requires manual review to determine whether it is a true duplicate or needs disambiguation."
             }'
 
       - name: Post acknowledgement comment
