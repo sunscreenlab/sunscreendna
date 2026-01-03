@@ -1,4 +1,4 @@
-name: Approved sunscreen → draft processing
+name: Sunscreen submission processing
 
 on:
   issues:
@@ -9,8 +9,13 @@ permissions:
   issues: write
 
 jobs:
-  process-approved-sunscreen:
-    if: github.event.action == 'labeled' && github.event.label.name == 'approved'
+  process-sunscreen:
+    if: >
+      github.event.action == 'labeled' &&
+      (
+        github.event.label.name == 'approved' ||
+        github.event.label.name == 'dry-run'
+      )
     runs-on: ubuntu-latest
 
     steps:
@@ -22,20 +27,27 @@ jobs:
         with:
           node-version: 20
 
+      # ----------------------------
+      # Optional hardening
+      # ----------------------------
+      - name: Prevent approved + dry-run together
+        if: >
+          contains(github.event.issue.labels.*.name, 'approved') &&
+          contains(github.event.issue.labels.*.name, 'dry-run')
+        run: |
+          echo "❌ Issue cannot have both 'approved' and 'dry-run' labels."
+          exit 1
+
       - name: Log trigger info
         run: |
-          echo "Issue #${{ github.event.issue.number }} labeled '${{ github.event.label.name }}'"
-          echo "Title: ${{ github.event.issue.title }}"
+          echo "Issue #${{ github.event.issue.number }}"
+          echo "Triggered by label: ${{ github.event.label.name }}"
+          echo "All labels: ${{ join(github.event.issue.labels.*.name, ', ') }}"
 
-      - name: Log processing mode
-        run: |
-          if [[ "${{ contains(github.event.issue.labels.*.name, 'dry-run') }}" == "true" ]]; then
-            echo "🧪 Running in DRY RUN mode (no data will be written)"
-          else
-            echo "✅ Running in LIVE mode"
-          fi
-
-      - name: Parse sunscreen
+      # ----------------------------
+      # Parse submission
+      # ----------------------------
+      - name: Parse sunscreen submission
         working-directory: .github/scripts
         env:
           ISSUE_BODY: ${{ github.event.issue.body }}
@@ -43,43 +55,87 @@ jobs:
           npm install
           node parse-sunscreen.js
 
-      - name: Write sunscreen to JSON
+      # ----------------------------
+      # Sanitize + write (or dry run)
+      # ----------------------------
+      - name: Sanitize and process sunscreen
+        id: write_sunscreen
         env:
           SUNSCREEN_DRY_RUN: ${{ contains(github.event.issue.labels.*.name, 'dry-run') }}
         run: node scripts/write-sunscreen-json.js
 
-      - name: Commit sunscreens.json
-        if: ${{ !contains(github.event.issue.labels.*.name, 'dry-run') }}
-        run: |
-          git config user.name "sunscreen-bot"
-          git config user.email "sunscreen-bot@users.noreply.github.com"
-          git status
-          git add data/sunscreens.json
-          git commit -m "Add sunscreen: $SUNSCREEN_ID"
-          git push
-
-      - name: Notify on duplicate rejection
-        if: failure()
+      # ----------------------------
+      # Post sanitizer warnings
+      # ----------------------------
+      - name: Post sanitizer warnings summary
+        if: >
+          steps.write_sunscreen.outputs.sanitizer_warnings != '' &&
+          (
+            contains(github.event.issue.labels.*.name, 'dry-run') ||
+            steps.write_sunscreen.outputs.sanitizer_warnings != 'W10='
+          )
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          WARNINGS_B64: ${{ steps.write_sunscreen.outputs.sanitizer_warnings }}
         run: |
+          WARNINGS_JSON=$(echo "$WARNINGS_B64" | base64 --decode)
+
+          BODY="⚠️ **Sanitizer warnings detected**\n\n"
+
+          echo "$WARNINGS_JSON" | jq -c '.[]' | while read -r warning; do
+            TYPE=$(echo "$warning" | jq -r '.type')
+            case "$TYPE" in
+              brand-removed-from-product)
+                BODY+="• Brand name was removed from the product name.\n"
+                ;;
+              spf-pa-removed-from-product)
+                BODY+="• SPF/PA notation was removed from the product name.\n"
+                ;;
+              inferred-filter)
+                FILTER=$(echo "$warning" | jq -r '.filter')
+                BODY+="• UV filter inferred from ingredients: **$FILTER**.\n"
+                ;;
+              unknown-uv-filter)
+                ING=$(echo "$warning" | jq -r '.ingredient')
+                BODY+="• Possible unknown UV filter detected: **$ING**.\n"
+                ;;
+              *)
+                BODY+="• ${TYPE}\n"
+                ;;
+            esac
+          done
+
+          BODY+="\nPlease review these warnings before finalizing."
+
           curl -X POST \
             -H "Authorization: Bearer $GITHUB_TOKEN" \
             -H "Accept: application/vnd.github+json" \
             https://api.github.com/repos/${{ github.repository }}/issues/${{ github.event.issue.number }}/comments \
-            -d '{
-              "body": "❌ **Duplicate sunscreen detected**\n\nAn entry with this sunscreen ID already exists in `data/sunscreens.json`.\n\nNo data was changed. This submission requires manual review to determine whether it is a true duplicate or needs disambiguation."
-            }'
+            -d "$(jq -nc --arg body "$BODY" '{ body: $body }')"
 
-      - name: Post acknowledgement comment
+      # ----------------------------
+      # Commit (only if approved)
+      # ----------------------------
+      - name: Commit sunscreens.json
+        if: contains(github.event.issue.labels.*.name, 'approved')
+        run: |
+          git config user.name "sunscreen-bot"
+          git config user.email "sunscreen-bot@users.noreply.github.com"
+          git add data/sunscreens.json
+          git commit -m "Add sunscreen: $SUNSCREEN_ID"
+          git push
+
+      # ----------------------------
+      # Final acknowledgement
+      # ----------------------------
+      - name: Post completion comment
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          IS_DRY_RUN: ${{ contains(github.event.issue.labels.*.name, 'dry-run') }}
         run: |
-          if [[ "$IS_DRY_RUN" == "true" ]]; then
-            BODY="🧪 **Dry run completed**\n\nThis submission passed validation, but no data was written because the \`dry-run\` label is present.\n\nRemove the \`dry-run\` label and re-apply **approved** to publish it."
+          if [[ "${{ contains(github.event.issue.labels.*.name, 'dry-run') }}" == "true" ]]; then
+            BODY="🧪 **Dry run complete**\n\nThe submission was sanitized and validated, but no data was written."
           else
-            BODY="✅ **Submission approved and added**\n\nThis sunscreen has been approved and added to the SunscreenDNA dataset.\n\nThank you for your contribution!"
+            BODY="✅ **Submission approved and added**\n\nThis sunscreen has been added to `sunscreens.json`."
           fi
 
           curl -X POST \
