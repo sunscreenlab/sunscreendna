@@ -1,0 +1,3 @@
+# GitHub Actions script dependencies
+.github/scripts/node_modules/
+.github/scripts/package-lock.json
