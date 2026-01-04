@@ -28,21 +28,21 @@ jobs:
           node-version: 20
 
       # ----------------------------
-      # Optional hardening
+      # Log trigger info
       # ----------------------------
-      - name: Prevent approved + dry-run together
-        if: >
-          contains(github.event.issue.labels.*.name, 'approved') &&
-          contains(github.event.issue.labels.*.name, 'dry-run')
-        run: |
-          echo "❌ Issue cannot have both 'approved' and 'dry-run' labels."
-          exit 1
-
       - name: Log trigger info
         run: |
           echo "Issue #${{ github.event.issue.number }}"
           echo "Triggered by label: ${{ github.event.label.name }}"
           echo "All labels: ${{ join(github.event.issue.labels.*.name, ', ') }}"
+
+      - name: Log processing mode
+        run: |
+          if [[ "${{ github.event.label.name }}" == "dry-run" ]]; then
+            echo "🧪 Running in DRY RUN mode (validation only)"
+          else
+            echo "✅ Running in LIVE mode (will publish)"
+          fi
 
       # ----------------------------
       # Parse submission
@@ -56,12 +56,12 @@ jobs:
           node parse-sunscreen.js
 
       # ----------------------------
-      # Sanitize + write (or dry run)
+      # Sanitize + process
       # ----------------------------
       - name: Sanitize and process sunscreen
         id: write_sunscreen
         env:
-          SUNSCREEN_DRY_RUN: ${{ contains(github.event.issue.labels.*.name, 'dry-run') }}
+          SUNSCREEN_DRY_RUN: ${{ github.event.label.name == 'dry-run' }}
         run: node scripts/write-sunscreen-json.js
 
       # ----------------------------
@@ -71,7 +71,7 @@ jobs:
         if: >
           steps.write_sunscreen.outputs.sanitizer_warnings != '' &&
           (
-            contains(github.event.issue.labels.*.name, 'dry-run') ||
+            github.event.label.name == 'dry-run' ||
             steps.write_sunscreen.outputs.sanitizer_warnings != 'W10='
           )
         env:
@@ -114,10 +114,10 @@ jobs:
             -d "$(jq -nc --arg body "$BODY" '{ body: $body }')"
 
       # ----------------------------
-      # Commit (only if approved)
+      # Commit (only when approved)
       # ----------------------------
       - name: Commit sunscreens.json
-        if: contains(github.event.issue.labels.*.name, 'approved')
+        if: github.event.label.name == 'approved'
         run: |
           git config user.name "sunscreen-bot"
           git config user.email "sunscreen-bot@users.noreply.github.com"
@@ -132,10 +132,10 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          if [[ "${{ contains(github.event.issue.labels.*.name, 'dry-run') }}" == "true" ]]; then
+          if [[ "${{ github.event.label.name }}" == "dry-run" ]]; then
             BODY="🧪 **Dry run complete**\n\nThe submission was sanitized and validated, but no data was written."
           else
-            BODY="✅ **Submission approved and added**\n\nThis sunscreen has been added to `sunscreens.json`."
+            BODY="✅ **Submission approved and added**\n\nThis sunscreen has been added to the dataset."
           fi
 
           curl -X POST \
